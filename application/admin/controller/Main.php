@@ -82,17 +82,17 @@ class Main extends Common
         // 删除图片
         if ($act === 'del') {
             $img_dir = input('path');
-            if (substr($img_dir,0,9) !== '/uploads/') {
-                exit(json_encode(['status' => 0, 'msg' => '文件路径不合法']));
-            }
+            // if (substr($img_dir,0,9) !== '/uploads/') {
+            //     exit(json_encode(['status' => 0, 'msg' => '文件路径不合法']));
+            // }
             if (strpos($img_dir, '../') || strpos($img_dir, './')) {
                 exit(json_encode(['status' => 0, 'msg' => '文件路径不合法']));
             }
-            $path = str_replace(['/..\/','/../'],'/',Env::get('root_path') . 'public' . $img_dir);
+            $path = str_replace(['/..\/','/../'],'/',Env::get('root_path') . '../' . $img_dir);
             if (@unlink($path)) {
                 exit(json_encode(['status' => 1, 'msg' => '删除成功']));
             } else {
-                exit(json_encode(['status' => 0, 'msg' => '删除失败' ,'path' => $path, 'real_path' => $img_dir, 'env' => Env::get('root_path')]));
+                exit(json_encode(['status' => 0, 'msg' => $path ,'path' => $path, 'real_path' => $img_dir, 'env' => Env::get('root_path')]));
             }
         }
         exit(json_encode(['status' => 0, 'msg' => '操作不合法']));
